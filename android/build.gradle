@@ -1,0 +1,35 @@
+buildscript {
+    ext.kotlin_version = '1.7.0'
+    // 导入通用的 Maven 库配置
+    apply from : 'maven.gradle'
+
+
+
+    repositories {
+        addCommonMaven(repositories)
+    }
+
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+     repositories {
+        addCommonMaven(repositories)
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
